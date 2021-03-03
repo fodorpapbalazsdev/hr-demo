@@ -2,15 +2,9 @@ package com.avinty.hr.controller;
 
 
 import com.avinty.hr.entity.Department;
-import com.avinty.hr.entity.Employee;
 import com.avinty.hr.exception.department.*;
-import com.avinty.hr.exception.employee.EmailAlreadyExistsException;
-import com.avinty.hr.exception.employee.EmployeeCannotBeCreatedException;
-import com.avinty.hr.exception.employee.EmployeeNotFoundException;
-import com.avinty.hr.exception.employee.InvalidEmployeeVMException;
 import com.avinty.hr.models.DepartmentUpdateVM;
 import com.avinty.hr.models.DepartmentVM;
-import com.avinty.hr.models.EmployeeUpdateVM;
 import com.avinty.hr.service.DepartmentService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

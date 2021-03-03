@@ -34,17 +34,16 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public List<Department> getDepartments() {
-        List<Department> Departments = departmentRepository.findAll();
-        return Departments;
+        return departmentRepository.findAll();
     }
 
     @Override
     public Department getDepartment(Long id) throws DepartmentNotFoundException {
-        Optional<Department> DepartmentOptional = departmentRepository.findById(id);
-        if (!DepartmentOptional.isPresent()) {
+        Optional<Department> departmentOptional = departmentRepository.findById(id);
+        if (!departmentOptional.isPresent()) {
             throw new DepartmentNotFoundException(id);
         }
-        return DepartmentOptional.get();
+        return departmentOptional.get();
     }
 
     @Override
