@@ -2,10 +2,7 @@ package com.avinty.hr.controller;
 
 
 import com.avinty.hr.entity.Employee;
-import com.avinty.hr.exception.employee.EmailAlreadyExistsException;
-import com.avinty.hr.exception.employee.EmployeeCannotBeCreatedException;
-import com.avinty.hr.exception.employee.EmployeeNotFoundException;
-import com.avinty.hr.exception.employee.InvalidEmployeeVMException;
+import com.avinty.hr.exception.employee.*;
 import com.avinty.hr.models.EmployeeUpdateVM;
 import com.avinty.hr.models.EmployeeVM;
 import com.avinty.hr.service.EmployeeService;
@@ -58,6 +55,17 @@ public class EmployeeController {
         try {
             return new ResponseEntity<>(employeeService.updateEmployee(employee), HttpStatus.OK);
         } catch (InvalidEmployeeVMException | EmailAlreadyExistsException | EmployeeNotFoundException | EmployeeCannotBeCreatedException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+        }
+    }
+
+    @DeleteMapping(path = "{id}")
+    @ResponseBody
+    public ResponseEntity<Boolean> deleteEmployee(@PathVariable Long id) {
+        try {
+            return new ResponseEntity<>(employeeService.deleteEmployee(id), HttpStatus.OK);
+        } catch (EmployeeNotFoundException | EmployeCannotBeDeleteException e) {
             throw new ResponseStatusException(
                     HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         }

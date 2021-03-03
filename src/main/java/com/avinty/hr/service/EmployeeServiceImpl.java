@@ -3,10 +3,7 @@ package com.avinty.hr.service;
 import com.avinty.hr.entity.Department;
 import com.avinty.hr.entity.Employee;
 import com.avinty.hr.exception.department.DepartmentNotFoundException;
-import com.avinty.hr.exception.employee.EmailAlreadyExistsException;
-import com.avinty.hr.exception.employee.EmployeeCannotBeCreatedException;
-import com.avinty.hr.exception.employee.EmployeeNotFoundException;
-import com.avinty.hr.exception.employee.InvalidEmployeeVMException;
+import com.avinty.hr.exception.employee.*;
 import com.avinty.hr.models.EmployeeUpdateVM;
 import com.avinty.hr.models.EmployeeVM;
 import com.avinty.hr.repository.EmployeeRepository;
@@ -17,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.StringJoiner;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -73,8 +72,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee deleteEmployee(Long id) {
-        return null;
+    public Boolean deleteEmployee(Long id) throws EmployeeNotFoundException, EmployeCannotBeDeleteException {
+        Employee employeeToDelete = this.getEmployee(id);
+        this.checkIfEmployeeIsAManager(employeeToDelete);
+        employeeRepository.delete(employeeToDelete);
+        return true;
     }
 
     private void checkIfEmailAlreadyExistsInDatabase(String email) throws EmailAlreadyExistsException {
@@ -102,6 +104,18 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .findAny();
         if (employeesWithSameEmail.isPresent()) {
             throw new EmailAlreadyExistsException(email);
+        }
+    }
+
+    private void checkIfEmployeeIsAManager(Employee employeeToDelete) throws EmployeCannotBeDeleteException {
+       List<Department> departmentsManageByEmployee = this.departmentService.getDepartments()
+                .stream()
+                .filter(dep -> dep.getManager().getId().equals(employeeToDelete.getId()))
+                .collect(Collectors.toList());
+        if (!departmentsManageByEmployee.isEmpty()) {
+            StringJoiner ids = new StringJoiner(", ");
+            departmentsManageByEmployee.stream().map(Department::getId).forEach(id -> ids.add(id.toString()));
+            throw new EmployeCannotBeDeleteException("Employee cannot be delete, because she/he is managing the following Departments with id: " + ids.toString());
         }
     }
 }

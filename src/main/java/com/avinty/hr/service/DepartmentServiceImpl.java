@@ -2,10 +2,7 @@ package com.avinty.hr.service;
 
 import com.avinty.hr.entity.Department;
 import com.avinty.hr.entity.Employee;
-import com.avinty.hr.exception.department.DepartmentCannotBeCreatedException;
-import com.avinty.hr.exception.department.DepartmentNameAlreadyExistsException;
-import com.avinty.hr.exception.department.DepartmentNotFoundException;
-import com.avinty.hr.exception.department.InvalidDepartmentVMException;
+import com.avinty.hr.exception.department.*;
 import com.avinty.hr.exception.employee.EmployeeNotFoundException;
 import com.avinty.hr.models.DepartmentUpdateVM;
 import com.avinty.hr.models.DepartmentVM;
@@ -17,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
@@ -71,8 +69,11 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Department deleteDepartment(Long id) {
-        return null;
+    public Boolean deleteDepartment(Long id) throws DepartmentNotFoundException, DepartmentCannotBeDeleteException {
+        Department departmentToDelete = this.getDepartment(id);
+        this.checkIfDepartmentDeletable(departmentToDelete);
+        departmentRepository.delete(departmentToDelete);
+        return true;
     }
 
     private void checkIfDepartmentNameAlreadyExistsInDatabase(String name) throws DepartmentNameAlreadyExistsException {
@@ -86,11 +87,11 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     private void checkIfDepartmentNameAlreadyExistsInDatabaseExclude(String name, Long id) throws DepartmentNameAlreadyExistsException {
-        Optional<Department> departmentsWithSameName = this.departmentRepository.findAll()
+        List<Department> departmentsWithSameName = this.departmentRepository.findAll()
                 .stream()
                 .filter(department -> department.getName().equals(name) && department.getId() != id)
-                .findAny();
-        if (departmentsWithSameName.isPresent()) {
+                .collect(Collectors.toList());
+        if (!departmentsWithSameName.isEmpty()) {
             throw new DepartmentNameAlreadyExistsException(name);
         }
     }
@@ -100,6 +101,12 @@ public class DepartmentServiceImpl implements DepartmentService {
             return employeeService.getEmployee(departmentVm.getManagerId());
         } catch (EmployeeNotFoundException e) {
             throw new DepartmentCannotBeCreatedException(departmentVm.getManagerId());
+        }
+    }
+
+    private void checkIfDepartmentDeletable(Department departmentToDelete) throws DepartmentCannotBeDeleteException {
+        if (!departmentToDelete.getEmployees().isEmpty()) {
+            throw new DepartmentCannotBeDeleteException("Department cannot be delete, because it's employee list is not empty!");
         }
     }
 

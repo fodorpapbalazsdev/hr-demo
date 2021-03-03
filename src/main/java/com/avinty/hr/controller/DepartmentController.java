@@ -3,10 +3,7 @@ package com.avinty.hr.controller;
 
 import com.avinty.hr.entity.Department;
 import com.avinty.hr.entity.Employee;
-import com.avinty.hr.exception.department.DepartmentCannotBeCreatedException;
-import com.avinty.hr.exception.department.DepartmentNameAlreadyExistsException;
-import com.avinty.hr.exception.department.DepartmentNotFoundException;
-import com.avinty.hr.exception.department.InvalidDepartmentVMException;
+import com.avinty.hr.exception.department.*;
 import com.avinty.hr.exception.employee.EmailAlreadyExistsException;
 import com.avinty.hr.exception.employee.EmployeeCannotBeCreatedException;
 import com.avinty.hr.exception.employee.EmployeeNotFoundException;
@@ -64,6 +61,17 @@ public class DepartmentController {
         try {
             return new ResponseEntity<>(departmentService.updateDepartment(departmentUpdateVM), HttpStatus.OK);
         } catch (InvalidDepartmentVMException | DepartmentNotFoundException | DepartmentNameAlreadyExistsException | DepartmentCannotBeCreatedException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+        }
+    }
+
+    @DeleteMapping(path = "{id}")
+    @ResponseBody
+    public ResponseEntity<Boolean> deleteDepartment(@PathVariable Long id) {
+        try {
+            return new ResponseEntity<>(departmentService.deleteDepartment(id), HttpStatus.OK);
+        } catch (DepartmentNotFoundException | DepartmentCannotBeDeleteException e) {
             throw new ResponseStatusException(
                     HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         }

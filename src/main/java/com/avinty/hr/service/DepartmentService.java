@@ -1,10 +1,7 @@
 package com.avinty.hr.service;
 
 import com.avinty.hr.entity.Department;
-import com.avinty.hr.exception.department.DepartmentCannotBeCreatedException;
-import com.avinty.hr.exception.department.DepartmentNameAlreadyExistsException;
-import com.avinty.hr.exception.department.DepartmentNotFoundException;
-import com.avinty.hr.exception.department.InvalidDepartmentVMException;
+import com.avinty.hr.exception.department.*;
 import com.avinty.hr.models.DepartmentUpdateVM;
 import com.avinty.hr.models.DepartmentVM;
 
@@ -19,5 +16,5 @@ public interface DepartmentService {
 
     Department updateDepartment(DepartmentUpdateVM departmentUpdateVM) throws InvalidDepartmentVMException, DepartmentNotFoundException, DepartmentNameAlreadyExistsException, DepartmentCannotBeCreatedException;
 
-    Department deleteDepartment(Long id);
+    Boolean deleteDepartment(Long id) throws DepartmentNotFoundException, DepartmentCannotBeDeleteException;
 }
