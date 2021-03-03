@@ -2,7 +2,11 @@ package com.avinty.hr.controller;
 
 
 import com.avinty.hr.entity.Department;
+import com.avinty.hr.exception.DepartmentCannotBeCreatedException;
+import com.avinty.hr.exception.DepartmentNameAlreadyExistsException;
 import com.avinty.hr.exception.DepartmentNotFoundException;
+import com.avinty.hr.exception.InvalidDepartmentVMException;
+import com.avinty.hr.models.DepartmentVM;
 import com.avinty.hr.service.DepartmentService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,6 +35,17 @@ public class DepartmentController {
         try {
             return new ResponseEntity<>(departmentService.getDepartment(id), HttpStatus.OK);
         } catch (DepartmentNotFoundException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+        }
+    }
+
+    @PostMapping
+    @ResponseBody
+    public ResponseEntity<Department> createDepartment(@RequestBody DepartmentVM department) {
+        try {
+            return new ResponseEntity<>(departmentService.createDepartment(department), HttpStatus.OK);
+        } catch (DepartmentCannotBeCreatedException | InvalidDepartmentVMException | DepartmentNameAlreadyExistsException e) {
             throw new ResponseStatusException(
                     HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         }

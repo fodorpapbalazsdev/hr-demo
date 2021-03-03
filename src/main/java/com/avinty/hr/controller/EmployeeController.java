@@ -2,7 +2,11 @@ package com.avinty.hr.controller;
 
 
 import com.avinty.hr.entity.Employee;
+import com.avinty.hr.exception.EmailAlreadyExistsException;
+import com.avinty.hr.exception.EmployeeCannotBeCreatedException;
 import com.avinty.hr.exception.EmployeeNotFoundException;
+import com.avinty.hr.exception.InvalidEmployeeVMException;
+import com.avinty.hr.models.EmployeeVM;
 import com.avinty.hr.service.EmployeeService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,6 +35,17 @@ public class EmployeeController {
         try {
             return new ResponseEntity<>(employeeService.getEmployee(id), HttpStatus.OK);
         } catch (EmployeeNotFoundException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+        }
+    }
+
+    @PostMapping
+    @ResponseBody
+    public ResponseEntity<Employee> createEmployee(@RequestBody EmployeeVM employee) {
+        try {
+            return new ResponseEntity<>(employeeService.createEmployee(employee), HttpStatus.OK);
+        } catch (EmployeeCannotBeCreatedException | EmailAlreadyExistsException | InvalidEmployeeVMException e) {
             throw new ResponseStatusException(
                     HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         }
