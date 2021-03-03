@@ -1,4 +1,4 @@
-package com.avinty.hr.exception;
+package com.avinty.hr.exception.employee;
 
 public final class EmployeeErrorConstraints {
     public static final String EMPLOYEE_NOT_FOUND_BY_ID = "employee-not-found-by-id";

@@ -1,7 +1,7 @@
 package com.avinty.hr.service;
 
 import com.avinty.hr.entity.Employee;
-import com.avinty.hr.exception.EmployeeNotFoundException;
+import com.avinty.hr.exception.employee.EmployeeNotFoundException;
 import com.avinty.hr.repository.EmployeeRepository;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.DisplayName;

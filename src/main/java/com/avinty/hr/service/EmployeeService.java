@@ -1,10 +1,10 @@
 package com.avinty.hr.service;
 
 import com.avinty.hr.entity.Employee;
-import com.avinty.hr.exception.EmailAlreadyExistsException;
-import com.avinty.hr.exception.EmployeeCannotBeCreatedException;
-import com.avinty.hr.exception.EmployeeNotFoundException;
-import com.avinty.hr.exception.InvalidEmployeeVMException;
+import com.avinty.hr.exception.employee.EmailAlreadyExistsException;
+import com.avinty.hr.exception.employee.EmployeeCannotBeCreatedException;
+import com.avinty.hr.exception.employee.EmployeeNotFoundException;
+import com.avinty.hr.exception.employee.InvalidEmployeeVMException;
 import com.avinty.hr.models.EmployeeVM;
 
 import java.util.List;

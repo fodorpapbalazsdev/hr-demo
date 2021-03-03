@@ -1,4 +1,4 @@
-package com.avinty.hr.exception;
+package com.avinty.hr.exception.department;
 
 public class DepartmentCannotBeCreatedException extends Exception {
     public DepartmentCannotBeCreatedException(Long managerId) {

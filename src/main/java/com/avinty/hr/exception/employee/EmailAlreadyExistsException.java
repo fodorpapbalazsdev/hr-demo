@@ -1,4 +1,4 @@
-package com.avinty.hr.exception;
+package com.avinty.hr.exception.employee;
 
 public class EmailAlreadyExistsException extends Throwable {
     public EmailAlreadyExistsException(String email) {

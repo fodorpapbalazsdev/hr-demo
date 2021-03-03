@@ -1,4 +1,4 @@
-package com.avinty.hr.exception;
+package com.avinty.hr.exception.department;
 
 public class DepartmentErrorConstraints {
     public static final String DEPARTMENT_NAME_NULL = "department-name-null";

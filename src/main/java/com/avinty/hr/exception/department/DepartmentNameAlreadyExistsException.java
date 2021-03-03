@@ -1,4 +1,4 @@
-package com.avinty.hr.exception;
+package com.avinty.hr.exception.department;
 
 public class DepartmentNameAlreadyExistsException extends Throwable {
     public DepartmentNameAlreadyExistsException(String name) {

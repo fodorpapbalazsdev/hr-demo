@@ -2,10 +2,10 @@ package com.avinty.hr.controller;
 
 
 import com.avinty.hr.entity.Department;
-import com.avinty.hr.exception.DepartmentCannotBeCreatedException;
-import com.avinty.hr.exception.DepartmentNameAlreadyExistsException;
-import com.avinty.hr.exception.DepartmentNotFoundException;
-import com.avinty.hr.exception.InvalidDepartmentVMException;
+import com.avinty.hr.exception.department.DepartmentCannotBeCreatedException;
+import com.avinty.hr.exception.department.DepartmentNameAlreadyExistsException;
+import com.avinty.hr.exception.department.DepartmentNotFoundException;
+import com.avinty.hr.exception.department.InvalidDepartmentVMException;
 import com.avinty.hr.models.DepartmentVM;
 import com.avinty.hr.service.DepartmentService;
 import lombok.AllArgsConstructor;

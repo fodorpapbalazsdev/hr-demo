@@ -1,7 +1,7 @@
 package com.avinty.hr.service;
 
 import com.avinty.hr.entity.Department;
-import com.avinty.hr.exception.DepartmentNotFoundException;
+import com.avinty.hr.exception.department.DepartmentNotFoundException;
 import com.avinty.hr.repository.DepartmentRepository;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.DisplayName;

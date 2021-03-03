@@ -1,4 +1,4 @@
-package com.avinty.hr.exception;
+package com.avinty.hr.exception.department;
 
 public class DepartmentNotFoundException extends Exception {
     public DepartmentNotFoundException(Long id) {

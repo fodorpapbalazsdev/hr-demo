@@ -1,11 +1,8 @@
 package com.avinty.hr.service.validator;
 
-import com.avinty.hr.exception.DepartmentErrorConstraints;
-import com.avinty.hr.exception.EmployeeErrorConstraints;
-import com.avinty.hr.exception.InvalidDepartmentVMException;
-import com.avinty.hr.exception.InvalidEmployeeVMException;
+import com.avinty.hr.exception.department.DepartmentErrorConstraints;
+import com.avinty.hr.exception.department.InvalidDepartmentVMException;
 import com.avinty.hr.models.DepartmentVM;
-import com.avinty.hr.models.EmployeeVM;
 import org.springframework.stereotype.Service;
 
 @Service
