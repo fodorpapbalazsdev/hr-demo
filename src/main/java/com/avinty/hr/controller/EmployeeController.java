@@ -6,6 +6,7 @@ import com.avinty.hr.exception.employee.EmailAlreadyExistsException;
 import com.avinty.hr.exception.employee.EmployeeCannotBeCreatedException;
 import com.avinty.hr.exception.employee.EmployeeNotFoundException;
 import com.avinty.hr.exception.employee.InvalidEmployeeVMException;
+import com.avinty.hr.models.EmployeeUpdateVM;
 import com.avinty.hr.models.EmployeeVM;
 import com.avinty.hr.service.EmployeeService;
 import lombok.AllArgsConstructor;
@@ -46,6 +47,17 @@ public class EmployeeController {
         try {
             return new ResponseEntity<>(employeeService.createEmployee(employee), HttpStatus.OK);
         } catch (EmployeeCannotBeCreatedException | EmailAlreadyExistsException | InvalidEmployeeVMException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+        }
+    }
+
+    @PutMapping
+    @ResponseBody
+    public ResponseEntity<Employee> updateEmployee(@RequestBody EmployeeUpdateVM employee) {
+        try {
+            return new ResponseEntity<>(employeeService.updateEmployee(employee), HttpStatus.OK);
+        } catch (InvalidEmployeeVMException | EmailAlreadyExistsException | EmployeeNotFoundException | EmployeeCannotBeCreatedException e) {
             throw new ResponseStatusException(
                     HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         }

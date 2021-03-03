@@ -7,6 +7,7 @@ import com.avinty.hr.exception.department.DepartmentNameAlreadyExistsException;
 import com.avinty.hr.exception.department.DepartmentNotFoundException;
 import com.avinty.hr.exception.department.InvalidDepartmentVMException;
 import com.avinty.hr.exception.employee.EmployeeNotFoundException;
+import com.avinty.hr.models.DepartmentUpdateVM;
 import com.avinty.hr.models.DepartmentVM;
 import com.avinty.hr.repository.DepartmentRepository;
 import com.avinty.hr.service.validator.DepartmentVMValidator;
@@ -57,8 +58,16 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Department updateDepartment(Long id) {
-        return null;
+    public Department updateDepartment(DepartmentUpdateVM departmentUpdateVM) throws InvalidDepartmentVMException, DepartmentNotFoundException, DepartmentNameAlreadyExistsException, DepartmentCannotBeCreatedException {
+        departmentVMValidator.validate(departmentUpdateVM);
+        Department departmentToUpdate = this.getDepartment(departmentUpdateVM.getId());
+        this.checkIfDepartmentNameAlreadyExistsInDatabaseExclude(departmentUpdateVM.getName(), departmentUpdateVM.getId());
+        Employee manager = this.getManagerEmployeeFromVM(departmentUpdateVM);
+
+        departmentToUpdate.setName(departmentUpdateVM.getName());
+        departmentToUpdate.setManager(manager);
+
+        return departmentRepository.save(departmentToUpdate);
     }
 
     @Override
@@ -70,6 +79,16 @@ public class DepartmentServiceImpl implements DepartmentService {
         Optional<Department> departmentsWithSameName = this.departmentRepository.findAll()
                 .stream()
                 .filter(department -> department.getName().equals(name))
+                .findAny();
+        if (departmentsWithSameName.isPresent()) {
+            throw new DepartmentNameAlreadyExistsException(name);
+        }
+    }
+
+    private void checkIfDepartmentNameAlreadyExistsInDatabaseExclude(String name, Long id) throws DepartmentNameAlreadyExistsException {
+        Optional<Department> departmentsWithSameName = this.departmentRepository.findAll()
+                .stream()
+                .filter(department -> department.getName().equals(name) && department.getId() != id)
                 .findAny();
         if (departmentsWithSameName.isPresent()) {
             throw new DepartmentNameAlreadyExistsException(name);

@@ -7,6 +7,7 @@ import com.avinty.hr.exception.employee.EmailAlreadyExistsException;
 import com.avinty.hr.exception.employee.EmployeeCannotBeCreatedException;
 import com.avinty.hr.exception.employee.EmployeeNotFoundException;
 import com.avinty.hr.exception.employee.InvalidEmployeeVMException;
+import com.avinty.hr.models.EmployeeUpdateVM;
 import com.avinty.hr.models.EmployeeVM;
 import com.avinty.hr.repository.EmployeeRepository;
 import com.avinty.hr.service.validator.EmployeeVMValidator;
@@ -57,8 +58,18 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee updateEmployee(Long id) {
-        return null;
+    public Employee updateEmployee(EmployeeUpdateVM employeeUpdateVM) throws InvalidEmployeeVMException, EmailAlreadyExistsException, EmployeeCannotBeCreatedException, EmployeeNotFoundException {
+        employeeVMValidator.validate(employeeUpdateVM);
+        Employee employeeToUpdate = this.getEmployee(employeeUpdateVM.getId());
+        this.checkIfEmailAlreadyExistsInDatabaseExcludeId(employeeUpdateVM.getEmail(), employeeUpdateVM.getId());
+        Department department = this.getDepartmentsFromViewModel(employeeUpdateVM);
+
+        employeeToUpdate.setEmail(employeeUpdateVM.getEmail());
+        employeeToUpdate.setPassword(employeeUpdateVM.getPassword());
+        employeeToUpdate.setFullName(employeeUpdateVM.getFullName());
+        employeeToUpdate.setDepartment(department);
+
+        return employeeRepository.save(employeeToUpdate);
     }
 
     @Override
@@ -81,6 +92,16 @@ public class EmployeeServiceImpl implements EmployeeService {
             return departmentService.getDepartment(employeeVm.getDepartment());
         } catch (DepartmentNotFoundException e) {
             throw new EmployeeCannotBeCreatedException(employeeVm.getDepartment());
+        }
+    }
+
+    private void checkIfEmailAlreadyExistsInDatabaseExcludeId(String email, Long emloyeeId) throws EmailAlreadyExistsException {
+        Optional<Employee> employeesWithSameEmail = this.employeeRepository.findAll()
+                .stream()
+                .filter(employee -> employee.getEmail().equals(email) && employee.getId() != emloyeeId)
+                .findAny();
+        if (employeesWithSameEmail.isPresent()) {
+            throw new EmailAlreadyExistsException(email);
         }
     }
 }
