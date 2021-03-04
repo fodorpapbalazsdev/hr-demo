@@ -49,6 +49,9 @@ public class Employee {
     @JoinColumn(name = "updated_by")
     private Long updatedBy;
 
+    @JoinColumn(name = "profile_picture")
+    private String profilePicture;
+
     public Employee(EmployeeVM employeeVm, Department department) {
         this.email = employeeVm.getEmail();
         this.password = employeeVm.getPassword();
@@ -56,6 +59,7 @@ public class Employee {
         this.department = department;
         this.createdBy = employeeVm.getCreatedBy();
         this.updatedBy = this.createdBy;
+        this.profilePicture = employeeVm.getProfilePicture();
         /* createdAt at logic implemented in database side with trigger */
     }
 }

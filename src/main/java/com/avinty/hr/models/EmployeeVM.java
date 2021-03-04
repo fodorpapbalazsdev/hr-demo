@@ -15,4 +15,6 @@ public class EmployeeVM {
     private Long department;
     @NonNull
     private Long createdBy;
+    
+    private String profilePicture;
 }

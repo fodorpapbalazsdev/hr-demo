@@ -49,6 +49,17 @@ public class EmployeeController {
         }
     }
 
+    @PostMapping(path = "uploadProfilePics")
+    @ResponseBody
+    public ResponseEntity<Employee> createEmployeeWithProfilePicture(@RequestBody EmployeeVM employee) {
+        try {
+            return new ResponseEntity<>(employeeService.createEmployee(employee), HttpStatus.OK);
+        } catch (EmployeeCannotBeCreatedException | EmailAlreadyExistsException | InvalidEmployeeVMException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+        }
+    }
+
     @PutMapping
     @ResponseBody
     public ResponseEntity<Employee> updateEmployee(@RequestBody EmployeeUpdateVM employee) {
