@@ -38,7 +38,7 @@ public class AuthController {
     public ResponseEntity<ApiResponse> authenticateUser(@RequestBody ValidateTokenRequest validateTokenRequest) {
         try {
             return ResponseEntity.ok(authService.validateToken(validateTokenRequest));
-        } catch (ResourceException e) {
+        } catch (ResourceException | EmployeeNotFoundException e) {
             throw new ResponseStatusException(
                     HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         }

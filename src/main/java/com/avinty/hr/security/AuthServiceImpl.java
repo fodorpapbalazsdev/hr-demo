@@ -41,7 +41,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public ApiResponse validateToken(ValidateTokenRequest validateTokenRequest) throws ResourceException {
+    public ApiResponse validateToken(ValidateTokenRequest validateTokenRequest) throws ResourceException, EmployeeNotFoundException {
         if (validateTokenRequest.getToken() == null) {
             throw new ResourceException("token-null", "Token is required for token validation!");
         }
@@ -49,6 +49,7 @@ public class AuthServiceImpl implements AuthService {
         String jwt = validateTokenRequest.getToken();
         if (jwtTokenProvider.validateToken(jwt)) {
             String email = jwtTokenProvider.getEmailFromJwt(jwt);
+            employeeService.getEmployeeByEmail(email);
             return new ApiResponse(Boolean.TRUE, "Valid token for email " + email);
         }
         return new ApiResponse(Boolean.FALSE, "Invalid token");
