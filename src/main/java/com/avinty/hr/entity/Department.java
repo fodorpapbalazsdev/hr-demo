@@ -29,7 +29,7 @@ public class Department {
     @NotNull
     private String name;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "manager_id", referencedColumnName = "id")
     private Employee manager;
 

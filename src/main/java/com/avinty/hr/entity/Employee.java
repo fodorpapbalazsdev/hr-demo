@@ -33,7 +33,7 @@ public class Employee {
     @JoinColumn(name = "full_name")
     private String fullName;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "dep_id", referencedColumnName = "id")
     private Department department;
 
