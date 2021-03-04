@@ -84,6 +84,15 @@ alter table hr.patient_relationships
 	add constraint patient_relationships_pk
 		primary key (id);
 
+alter table hr.patient_relationships
+	add constraint patient_relationships_patients_id_id_fk
+		foreign key (patient_is, patient_of) references hr.patients (id, id);
+
+alter table hr.patient_relationships
+	add constraint patient_relationships_patients_id_fk_2
+		foreign key (patient_of) references hr.patients;
+
+
 
 -- triggers
 
