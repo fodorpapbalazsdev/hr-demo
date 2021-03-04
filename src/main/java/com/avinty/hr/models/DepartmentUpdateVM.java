@@ -7,4 +7,6 @@ import lombok.NonNull;
 public class DepartmentUpdateVM extends DepartmentVM {
     @NonNull
     private Long id;
+    @NonNull
+    private Long updatedBy;
 }

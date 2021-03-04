@@ -67,6 +67,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeToUpdate.setPassword(employeeUpdateVM.getPassword());
         employeeToUpdate.setFullName(employeeUpdateVM.getFullName());
         employeeToUpdate.setDepartment(department);
+        employeeToUpdate.setUpdatedBy(employeeUpdateVM.getUpdatedBy());
+        /* updatedAt at logic implemented in database side with trigger */
 
         return employeeRepository.save(employeeToUpdate);
     }

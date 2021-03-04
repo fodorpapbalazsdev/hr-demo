@@ -13,4 +13,6 @@ public class EmployeeVM {
     private String fullName;
     @NonNull
     private Long department;
+    @NonNull
+    private Long createdBy;
 }

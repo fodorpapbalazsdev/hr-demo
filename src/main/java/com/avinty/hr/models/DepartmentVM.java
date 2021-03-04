@@ -9,4 +9,6 @@ public class DepartmentVM {
     private String name;
     @NonNull
     private Long managerId;
+    @NonNull
+    private Long createdBy;
 }

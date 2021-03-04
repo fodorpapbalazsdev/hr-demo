@@ -63,6 +63,8 @@ public class DepartmentServiceImpl implements DepartmentService {
 
         departmentToUpdate.setName(departmentUpdateVM.getName());
         departmentToUpdate.setManager(manager);
+        departmentToUpdate.setUpdatedBy(departmentUpdateVM.getUpdatedBy());
+        /* updatedAt at logic implemented in database side with trigger */
 
         return departmentRepository.save(departmentToUpdate);
     }

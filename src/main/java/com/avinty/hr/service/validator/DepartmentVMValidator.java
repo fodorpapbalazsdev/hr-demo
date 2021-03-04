@@ -13,6 +13,14 @@ public class DepartmentVMValidator implements ResourceValidator<DepartmentVM> {
             if (((DepartmentUpdateVM) departmentVM).getId() == null) {
                 throw new InvalidDepartmentVMException(DepartmentErrorConstraints.ID_NULL, "Id is required for Department update.");
             }
+            if (((DepartmentUpdateVM) departmentVM).getUpdatedBy() == null) {
+                throw new InvalidDepartmentVMException(DepartmentErrorConstraints.UPDATED_BY_ID_NULL, "Updated by id is required for Department update.");
+            }
+        }
+        if (!departmentVM.getClass().equals(DepartmentUpdateVM.class)) {
+            if (departmentVM.getCreatedBy() == null) {
+                throw new InvalidDepartmentVMException(DepartmentErrorConstraints.CREATED_BY_ID_NULL, "Created by id is required for Department creation.");
+            }
         }
         if (departmentVM.getName() == null) {
             throw new InvalidDepartmentVMException(DepartmentErrorConstraints.DEPARTMENT_NAME_NULL, "You must specify a department name for Department creation/update.");

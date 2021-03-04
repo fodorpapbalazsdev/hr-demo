@@ -7,4 +7,6 @@ import lombok.NonNull;
 public class EmployeeUpdateVM extends EmployeeVM {
     @NonNull
     private Long id;
+    @NonNull
+    private Long updatedBy;
 }

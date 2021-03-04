@@ -4,13 +4,12 @@ import com.avinty.hr.models.EmployeeVM;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.sun.istack.NotNull;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "employees")
@@ -38,10 +37,25 @@ public class Employee {
     @JoinColumn(name = "dep_id", referencedColumnName = "id")
     private Department department;
 
+    @JoinColumn(name = "created_at")
+    private Date createdAt;
+
+    @JoinColumn(name = "created_by")
+    private Long createdBy;
+
+    @JoinColumn(name = "updated_at")
+    private Date updatedAt;
+
+    @JoinColumn(name = "updated_by")
+    private Long updatedBy;
+
     public Employee(EmployeeVM employeeVm, Department department) {
         this.email = employeeVm.getEmail();
         this.password = employeeVm.getPassword();
         this.fullName = employeeVm.getFullName();
         this.department = department;
+        this.createdBy = employeeVm.getCreatedBy();
+        this.updatedBy = this.createdBy;
+        /* createdAt at logic implemented in database side with trigger */
     }
 }
