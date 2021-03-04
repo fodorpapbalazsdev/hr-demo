@@ -81,6 +81,20 @@ public class EmployeeServiceImpl implements EmployeeService {
         return true;
     }
 
+    @Override
+    public Employee getEmployeeByEmail(String email) throws EmployeeNotFoundException {
+        // TODO handle if not found
+        Optional<Employee> employeeWithThisEmail = employeeRepository.findAll()
+                .stream()
+                .filter(employee -> employee.getEmail().equals(email))
+                .findAny();
+        if (!employeeWithThisEmail.isPresent()) {
+            throw new EmployeeNotFoundException(email);
+        }
+
+        return employeeWithThisEmail.get();
+    }
+
     private void checkIfEmailAlreadyExistsInDatabase(String email) throws EmailAlreadyExistsException {
         Optional<Employee> employeesWithSameEmail = this.employeeRepository.findAll()
                 .stream()

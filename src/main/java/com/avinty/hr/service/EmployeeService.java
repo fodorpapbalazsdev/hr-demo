@@ -17,4 +17,6 @@ public interface EmployeeService {
     Employee updateEmployee(EmployeeUpdateVM employee) throws InvalidEmployeeVMException, EmailAlreadyExistsException, EmployeeCannotBeCreatedException, EmployeeNotFoundException;
 
     Boolean deleteEmployee(Long id) throws EmployeeNotFoundException, EmployeCannotBeDeleteException;
+
+    Employee getEmployeeByEmail(String username) throws EmployeeNotFoundException;
 }
